@@ -1,0 +1,45 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        setup = [
+                compileSdk : 30,
+                buildTools : "30.0.3",
+                minSdk     : 15,
+                targetSdk  : 30
+        ]
+
+        release = [
+                versionName: "0.0.1",   ///v0.0.1
+                versionCode: 1
+        ]
+    }
+
+    repositories {
+        mavenCentral()
+        google()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.2'
+
+        ///[FIX#jitpack#jcenter废弃#Please remove usages of `jcenter()` Maven repository from your build scripts and migrate your build to other Maven repositories.]
+        ///https://www.shangmayuan.com/a/12c08d0e68c3421cb2d547ee.html
+        ///https://stackoverflow.com/questions/67599438/gradle-7-and-jitpack-io-runs-into-error-during-publish
+//        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

@@ -1,0 +1,3 @@
+rootProject.name = "android-BezierCurveBottomNavigationView"
+include ':app'
+include ':library'
