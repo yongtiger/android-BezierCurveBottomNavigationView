@@ -44,8 +44,8 @@ public class BezierCurveBottomNavigationView  extends BottomNavigationView {
     ///https://proandroiddev.com/how-i-drew-custom-shapes-in-bottom-bar-c4539d86afd7
 
     /** the CURVE_CIRCLE_RADIUS represent the radius of the fab button */
-    private int mBezierCurveCircleRadius;   ///0:no Curve, 20 - 45
-    public void setBezierCurveCircleRadius(int bezierCurveCircleRadius) {
+    private float mBezierCurveCircleRadius;   ///0:no Curve, 20 - 45
+    public void setBezierCurveCircleRadius(float bezierCurveCircleRadius) {
         mBezierCurveCircleRadius = bezierCurveCircleRadius;
     }
     private View mAnchorView;
@@ -76,8 +76,8 @@ public class BezierCurveBottomNavigationView  extends BottomNavigationView {
             try {
                 ///dp2px
                 ///https://blog.csdn.net/zhangphil/article/details/80613879
-                mBezierCurveCircleRadius = Math.round(getResources().getDisplayMetrics().density
-                        * ta.getFloat(R.styleable.BezierCurveBottomNavigationView_bezierCurveCircleRadius, 0F));
+                mBezierCurveCircleRadius = getResources().getDisplayMetrics().density
+                        * ta.getFloat(R.styleable.BezierCurveBottomNavigationView_bezierCurveCircleRadius, 0F);
             } finally {
                 ta.recycle();
             }
@@ -120,7 +120,7 @@ public class BezierCurveBottomNavigationView  extends BottomNavigationView {
 
         ///[BezierCurve#AnchorView]
         if (mAnchorView != null && mAnchorView.getHeight() > 0 && mAnchorView.getY() > 0) {
-            mBezierCurveCircleRadius = (int) (mAnchorView.getHeight() + mAnchorView.getY() - getY());
+            mBezierCurveCircleRadius = mAnchorView.getHeight() + mAnchorView.getY() - getY();
         }
 
         if (mBezierCurveCircleRadius != 0) {
@@ -130,20 +130,20 @@ public class BezierCurveBottomNavigationView  extends BottomNavigationView {
             mNavigationBarHeight = getHeight();
 
             // the coordinates (x,y) of the start point before curve
-            mFirstCurveStartPoint.set((navigationBarWidth / 2) - (mBezierCurveCircleRadius * 2) - (mBezierCurveCircleRadius / 3), 0);
+            mFirstCurveStartPoint.set((navigationBarWidth / 2) - Math.round((mBezierCurveCircleRadius * 2) + (mBezierCurveCircleRadius / 3)), 0);
             // the coordinates (x,y) of the end point after curve
-            mFirstCurveEndPoint.set(navigationBarWidth / 2, mBezierCurveCircleRadius + (mBezierCurveCircleRadius / 4));
+            mFirstCurveEndPoint.set(navigationBarWidth / 2, Math.round(mBezierCurveCircleRadius + (mBezierCurveCircleRadius / 4)));
             // same thing for the second curve
             mSecondCurveStartPoint = mFirstCurveEndPoint;
-            mSecondCurveEndPoint.set((navigationBarWidth / 2) + (mBezierCurveCircleRadius * 2) + (mBezierCurveCircleRadius / 3), 0);
+            mSecondCurveEndPoint.set((navigationBarWidth / 2) + Math.round((mBezierCurveCircleRadius * 2) + (mBezierCurveCircleRadius / 3)), 0);
 
             // the coordinates (x,y)  of the 1st control point on a cubic curve
-            mFirstCurveControlPoint1.set(mFirstCurveStartPoint.x + mBezierCurveCircleRadius + (mBezierCurveCircleRadius / 4), mFirstCurveStartPoint.y);
+            mFirstCurveControlPoint1.set(mFirstCurveStartPoint.x + Math.round(mBezierCurveCircleRadius + (mBezierCurveCircleRadius / 4)), mFirstCurveStartPoint.y);
             // the coordinates (x,y)  of the 2nd control point on a cubic curve
-            mFirstCurveControlPoint2.set(mFirstCurveEndPoint.x - (mBezierCurveCircleRadius * 2) + mBezierCurveCircleRadius, mFirstCurveEndPoint.y);
+            mFirstCurveControlPoint2.set(mFirstCurveEndPoint.x - Math.round((mBezierCurveCircleRadius * 2) - mBezierCurveCircleRadius), mFirstCurveEndPoint.y);
 
-            mSecondCurveControlPoint1.set(mSecondCurveStartPoint.x + (mBezierCurveCircleRadius * 2) - mBezierCurveCircleRadius, mSecondCurveStartPoint.y);
-            mSecondCurveControlPoint2.set(mSecondCurveEndPoint.x - (mBezierCurveCircleRadius + (mBezierCurveCircleRadius / 4)), mSecondCurveEndPoint.y);
+            mSecondCurveControlPoint1.set(mSecondCurveStartPoint.x + Math.round((mBezierCurveCircleRadius * 2) - mBezierCurveCircleRadius), mSecondCurveStartPoint.y);
+            mSecondCurveControlPoint2.set(mSecondCurveEndPoint.x - Math.round(mBezierCurveCircleRadius + (mBezierCurveCircleRadius / 4)), mSecondCurveEndPoint.y);
 
             mPath.reset();
             mPath.moveTo(0, 0);
